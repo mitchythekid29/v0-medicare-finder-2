@@ -15,6 +15,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Script from "next/script"
 
+// Safe track function to avoid errors when ActiveProspect.track is unavailable
 const safeTrack = (event: string, data: any) => {
   try {
     if (window.ActiveProspect && typeof window.ActiveProspect.track === "function") {
@@ -27,6 +28,8 @@ const safeTrack = (event: string, data: any) => {
     console.error(`[AP.track] Error sending "${event}":`, err)
   }
 }
+
+// Main component
 export default function MedicareAdvantageLanding() {
   const [step, setStep] = useState(1)
   const [submitted, setSubmitted] = useState(false)
@@ -46,6 +49,7 @@ export default function MedicareAdvantageLanding() {
       [id]: value,
     })
 
+    // Use safeTrack for tracking field changes
     safeTrack("field_change", {
       field: id,
       value: value,
@@ -61,15 +65,17 @@ export default function MedicareAdvantageLanding() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-  
+
+    // Track form step completion
     safeTrack("form_step", {
       step: step,
       data: formData,
     })
-  
+
     if (step === 1) {
       setStep(2)
     } else {
+      // Final submission tracking
       safeTrack("form_complete", {
         data: formData,
       })
@@ -82,42 +88,24 @@ export default function MedicareAdvantageLanding() {
     formRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
-  // Safe wrapper for tracking
-  const safeTrack = (event: string, data: any) => {
-    const interval = setInterval(() => {
-      if (typeof window !== "undefined" && typeof window.ActiveProspect?.track === "function") {
-        window.ActiveProspect.track(event, data)
-        clearInterval(interval)
-      }
-    }, 300)
-  }
-
   useEffect(() => {
     const script = document.createElement("script")
     script.src = "https://cdn.trustedform.com/bootstrap.js?field=xxTrustedFormCertUrl"
     script.async = true
     script.id = "trustedform-script"
-
-    script.onload = () => {
-      console.log("TrustedForm script loaded")
-
-      const interval = setInterval(() => {
-        const certInput = document.getElementById("xxTrustedFormCertUrl") as HTMLInputElement | null
-        if (certInput?.value) {
-          console.log("TrustedForm cert ready:", certInput.value)
-          clearInterval(interval)
-        }
-      }, 500)
-    }
-
-    script.onerror = () => {
-      console.error("Failed to load TrustedForm script")
-    }
-
     document.body.appendChild(script)
+
+    const interval = setInterval(() => {
+      const certInput = document.getElementById("xxTrustedFormCertUrl") as HTMLInputElement | null
+      if (certInput?.value) {
+        console.log("TrustedForm cert:", certInput.value)
+        clearInterval(interval)
+      }
+    }, 1000)
 
     return () => {
       document.getElementById("trustedform-script")?.remove()
+      clearInterval(interval)
     }
   }, [])
 
