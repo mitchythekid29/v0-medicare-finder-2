@@ -119,7 +119,7 @@ export default function MedicareAdvantageLanding() {
         `}
       </Script> */}
 
-<Script id="trustedform-script" strategy="afterInteractive">
+<Script id="trustedform" strategy="afterInteractive">
   {`
     (function() {
       var tf = document.createElement('script');
@@ -131,6 +131,7 @@ export default function MedicareAdvantageLanding() {
     })();
   `}
 </Script>
+
 
       <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
