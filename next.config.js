@@ -1,4 +1,3 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   eslint: {
@@ -17,8 +16,19 @@ const nextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://certificates.trustedform.com https://api.trustedform.com https://cdn.trustedform.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self';",
+            value: `
+              default-src 'self';
+              script-src 'self' 'unsafe-inline' 'unsafe-eval' data: https://certificates.trustedform.com https://api.trustedform.com https://cdn.trustedform.com;
+              worker-src 'self' blob: data:;
+              style-src 'self' 'unsafe-inline';
+              img-src 'self' data: https:;
+              font-src 'self' data:;
+              connect-src 'self' https:;
+              frame-src 'self';
+              media-src 'self';
+              object-src 'none';
+              base-uri 'self';
+            `.replace(/\s{2,}/g, ' ').trim(),
           },
           {
             key: "X-Content-Type-Options",
@@ -34,8 +44,8 @@ const nextConfig = {
           },
         ],
       },
-    ]
+    ];
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
