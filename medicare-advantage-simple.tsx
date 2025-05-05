@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
+import { useEffect, useState, useRef } from "react"
 import { Check, ArrowRight, Phone, Heart, FileText, PillIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -14,7 +14,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import Image from "next/image"
 import Link from "next/link"
 import Script from "next/script"
-
 export default function MedicareAdvantageLanding() {
   const [step, setStep] = useState(1)
   const [submitted, setSubmitted] = useState(false)
@@ -27,8 +26,6 @@ export default function MedicareAdvantageLanding() {
     phone: "",
   })
 
-  // Initialize ActiveProspect TrustedForm
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
     setFormData({
@@ -36,7 +33,6 @@ export default function MedicareAdvantageLanding() {
       [id]: value,
     })
 
-    // Track field changes with ActiveProspect (if their API supports this)
     if (window.ActiveProspect && window.ActiveProspect.track) {
       window.ActiveProspect.track("field_change", {
         field: id,
@@ -55,7 +51,6 @@ export default function MedicareAdvantageLanding() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Track form step completion with ActiveProspect
     if (window.ActiveProspect && window.ActiveProspect.track) {
       window.ActiveProspect.track("form_step", {
         step: step,
@@ -66,7 +61,6 @@ export default function MedicareAdvantageLanding() {
     if (step === 1) {
       setStep(2)
     } else {
-      // Final submission tracking
       if (window.ActiveProspect && window.ActiveProspect.track) {
         window.ActiveProspect.track("form_complete", {
           data: formData,
@@ -80,59 +74,31 @@ export default function MedicareAdvantageLanding() {
     formRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
+
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src = "https://cdn.trustedform.com/bootstrap.js?field=xxTrustedFormCertUrl"
+    script.async = true
+    script.id = "trustedform-script"
+    document.body.appendChild(script)
+
+    const interval = setInterval(() => {
+      const certInput = document.getElementById("xxTrustedFormCertUrl") as HTMLInputElement | null
+      if (certInput?.value) {
+        console.log("TrustedForm cert:", certInput.value)
+        clearInterval(interval)
+      }
+    }, 1000)
+
+    return () => {
+      document.getElementById("trustedform-script")?.remove()
+      clearInterval(interval)
+    }
+  }, [])
+
   return (
     <div className="flex flex-col min-h-screen">
-      {/* ActiveProspect TrustedForm Script */}
-      {/* <Script id="trustedform-script" strategy="afterInteractive">
-        {`
-          (function() {
-            var tf = document.createElement('script');
-            tf.type = 'text/javascript'; tf.async = true;
-            tf.src = 'https://api.trustedform.com/trustedform.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(tf, s);
-          })();
-        `}
-      </Script> */}
-
-      {/* TrustedForm Certificate URL Script */}
-      {/* <Script id="trustedform-cert-url" strategy="afterInteractive">
-        {`
-          (function() {
-            var tfCertUrl = document.createElement('script');
-            tfCertUrl.type = 'text/javascript';
-            tfCertUrl.async = true;
-            tfCertUrl.src = 'https://certificates.trustedform.com/0.0.0/js/capture.js';
-            tfCertUrl.setAttribute('data-tf-domain', 'certificates.trustedform.com');
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(tfCertUrl, s);
-            
-            // Ensure the certificate URL is populated in the form field
-            window.addEventListener('load', function() {
-              setTimeout(function() {
-                if (typeof window.TrustedForm !== 'undefined') {
-                  document.getElementById('xxTrustedFormCertUrl').value = window.TrustedForm.certificate_url || '';
-                }
-              }, 1000);
-            });
-          })();
-        `}
-      </Script> */}
-
-<Script id="trustedform" strategy="afterInteractive">
-  {`
-    (function() {
-      var tf = document.createElement('script');
-      tf.type = 'text/javascript';
-      tf.async = true;
-      tf.src = 'https://cdn.trustedform.com/bootstrap.js?field=xxTrustedFormCertUrl';
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(tf, s);
-    })();
-  `}
-</Script>
-
-
+     
 
       <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
