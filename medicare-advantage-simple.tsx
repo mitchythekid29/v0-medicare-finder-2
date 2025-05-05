@@ -54,9 +54,10 @@ export default function MedicareAdvantageLanding() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
+alert('0')
     // Track form step completion with ActiveProspect
     if (window.ActiveProspect && window.ActiveProspect.track) {
+      alert('1')
       console.log('1');
       window.ActiveProspect.track("form_step", {
         step: step,
@@ -69,6 +70,7 @@ export default function MedicareAdvantageLanding() {
     } else {
       // Final submission tracking
       if (window.ActiveProspect && window.ActiveProspect.track) {
+        alert('2');
         console.log('2');
         window.ActiveProspect.track("form_complete", {
           data: formData,
