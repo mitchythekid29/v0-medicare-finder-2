@@ -83,7 +83,7 @@ export default function MedicareAdvantageLanding() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* ActiveProspect TrustedForm Script */}
-      <Script id="trustedform-script" strategy="afterInteractive">
+      {/* <Script id="trustedform-script" strategy="afterInteractive">
         {`
           (function() {
             var tf = document.createElement('script');
@@ -93,7 +93,7 @@ export default function MedicareAdvantageLanding() {
             s.parentNode.insertBefore(tf, s);
           })();
         `}
-      </Script>
+      </Script> */}
 
       {/* TrustedForm Certificate URL Script */}
       {/* <Script id="trustedform-cert-url" strategy="afterInteractive">
