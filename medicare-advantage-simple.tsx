@@ -15,21 +15,19 @@ import Image from "next/image"
 import Link from "next/link"
 import Script from "next/script"
 
-// Safe track function to avoid errors when ActiveProspect.track is unavailable
 const safeTrack = (event: string, data: any) => {
   try {
     if (window.ActiveProspect && typeof window.ActiveProspect.track === "function") {
       window.ActiveProspect.track(event, data)
       console.log(`[AP.track] Sent "${event}" with data:`, data)
     } else {
-      console.warn("[AP.track] ActiveProspect.track not available")
+      console.warn("[AP.track] ActiveProspect.track not available yet")
     }
   } catch (err) {
     console.error(`[AP.track] Error sending "${event}":`, err)
   }
 }
 
-// Main component
 export default function MedicareAdvantageLanding() {
   const [step, setStep] = useState(1)
   const [submitted, setSubmitted] = useState(false)
@@ -49,7 +47,7 @@ export default function MedicareAdvantageLanding() {
       [id]: value,
     })
 
-    // Use safeTrack for tracking field changes
+    // Safe track for field changes
     safeTrack("field_change", {
       field: id,
       value: value,
@@ -66,7 +64,7 @@ export default function MedicareAdvantageLanding() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Track form step completion
+    // Safe track for form step
     safeTrack("form_step", {
       step: step,
       data: formData,
@@ -75,17 +73,13 @@ export default function MedicareAdvantageLanding() {
     if (step === 1) {
       setStep(2)
     } else {
-      // Final submission tracking
+      // Safe track for form complete
       safeTrack("form_complete", {
         data: formData,
       })
       console.log("Final submission data:", formData)
       setSubmitted(true)
     }
-  }
-
-  const scrollToForm = () => {
-    formRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
   useEffect(() => {
@@ -101,7 +95,7 @@ export default function MedicareAdvantageLanding() {
         console.log("TrustedForm cert:", certInput.value)
         clearInterval(interval)
       }
-    }, 1000)
+    }, 500) // Reduced interval for better performance
 
     return () => {
       document.getElementById("trustedform-script")?.remove()
