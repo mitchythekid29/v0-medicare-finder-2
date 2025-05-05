@@ -54,7 +54,7 @@ export default function MedicareAdvantageLanding() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-alert('1');
+
     // Track form step completion with ActiveProspect
     if (window.ActiveProspect && window.ActiveProspect.track) {
       window.ActiveProspect.track("form_step", {
@@ -188,7 +188,7 @@ alert('1');
               </div>
               <div ref={formRef} className="bg-white rounded-xl shadow-lg p-6">
                 <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-4 text-center text-blue-600">
-                  Let's Get Started!
+                  Let's Get Started!!
                 </h2>
 
                 {!submitted ? (
