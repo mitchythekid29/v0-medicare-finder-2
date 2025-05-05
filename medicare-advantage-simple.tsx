@@ -96,7 +96,7 @@ export default function MedicareAdvantageLanding() {
       </Script>
 
       {/* TrustedForm Certificate URL Script */}
-      <Script id="trustedform-cert-url" strategy="afterInteractive">
+      {/* <Script id="trustedform-cert-url" strategy="afterInteractive">
         {`
           (function() {
             var tfCertUrl = document.createElement('script');
@@ -117,7 +117,20 @@ export default function MedicareAdvantageLanding() {
             });
           })();
         `}
-      </Script>
+      </Script> */}
+
+<Script id="trustedform-script" strategy="afterInteractive">
+  {`
+    (function() {
+      var tf = document.createElement('script');
+      tf.type = 'text/javascript';
+      tf.async = true;
+      tf.src = 'https://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(tf, s);
+    })();
+  `}
+</Script>
 
       <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
