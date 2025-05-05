@@ -61,12 +61,14 @@ export default function MedicareAdvantageLanding() {
     if (step === 1) {
       setStep(2)
     } else {
-      alert('12');
+      
       if (window.ActiveProspect && window.ActiveProspect.track) {
+        alert('121');
         window.ActiveProspect.track("form_complete", {
           data: formData,
         })
       }
+      alert('0');
       setSubmitted(true)
     }
   }
