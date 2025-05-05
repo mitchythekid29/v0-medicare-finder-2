@@ -14,6 +14,19 @@ import { Checkbox } from "@/components/ui/checkbox"
 import Image from "next/image"
 import Link from "next/link"
 import Script from "next/script"
+
+const safeTrack = (event: string, data: any) => {
+  try {
+    if (window.ActiveProspect && typeof window.ActiveProspect.track === "function") {
+      window.ActiveProspect.track(event, data)
+      console.log(`[AP.track] Sent "${event}" with data:`, data)
+    } else {
+      console.warn("[AP.track] ActiveProspect.track not available")
+    }
+  } catch (err) {
+    console.error(`[AP.track] Error sending "${event}":`, err)
+  }
+}
 export default function MedicareAdvantageLanding() {
   const [step, setStep] = useState(1)
   const [submitted, setSubmitted] = useState(false)
@@ -48,19 +61,18 @@ export default function MedicareAdvantageLanding() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
+  
     safeTrack("form_step", {
       step: step,
       data: formData,
     })
-
+  
     if (step === 1) {
       setStep(2)
     } else {
       safeTrack("form_complete", {
         data: formData,
       })
-
       console.log("Final submission data:", formData)
       setSubmitted(true)
     }
