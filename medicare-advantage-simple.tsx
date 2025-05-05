@@ -18,90 +18,91 @@ import Script from "next/script"
 const safeTrack = (event: string, data: any) => {
   try {
     if (window.ActiveProspect && typeof window.ActiveProspect.track === "function") {
-      window.ActiveProspect.track(event, data)
-      console.log(`[AP.track] Sent "${event}" with data:`, data)
+      window.ActiveProspect.track(event, data);
+      console.log(`[AP.track] Sent "${event}" with data:`, data);
     } else {
-      console.warn("[AP.track] ActiveProspect.track not available yet")
+      console.warn("[AP.track] ActiveProspect.track not available yet");
     }
   } catch (err) {
-    console.error(`[AP.track] Error sending "${event}":`, err)
+    console.error(`[AP.track] Error sending "${event}":`, err);
   }
-}
+};
 
 export default function MedicareAdvantageLanding() {
-  const [step, setStep] = useState(1)
-  const [submitted, setSubmitted] = useState(false)
-  const formRef = useRef<HTMLDivElement>(null)
+  const [step, setStep] = useState(1);
+  const [submitted, setSubmitted] = useState(false);
+  const formRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     zipCode: "",
     hasMedicare: "yes",
     phone: "",
-  })
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target
+    const { id, value } = e.target;
     setFormData({
       ...formData,
       [id]: value,
-    })
+    });
 
     // Safe track for field changes
     safeTrack("field_change", {
       field: id,
       value: value,
-    })
-  }
+    });
+  };
 
   const handleRadioChange = (value: string) => {
     setFormData({
       ...formData,
       hasMedicare: value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     // Safe track for form step
     safeTrack("form_step", {
       step: step,
       data: formData,
-    })
+    });
 
     if (step === 1) {
-      setStep(2)
+      setStep(2);
     } else {
       // Safe track for form complete
       safeTrack("form_complete", {
         data: formData,
-      })
-      console.log("Final submission data:", formData)
-      setSubmitted(true)
+      });
+      console.log("Final submission data:", formData);
+      setSubmitted(true);
     }
-  }
+  };
 
   useEffect(() => {
-    const script = document.createElement("script")
-    script.src = "https://cdn.trustedform.com/bootstrap.js?field=xxTrustedFormCertUrl"
-    script.async = true
-    script.id = "trustedform-script"
-    document.body.appendChild(script)
+    const script = document.createElement("script");
+    script.src = "https://cdn.trustedform.com/bootstrap.js?field=xxTrustedFormCertUrl";
+    script.async = true;
+    script.id = "trustedform-script";
+    document.body.appendChild(script);
 
-    const interval = setInterval(() => {
-      const certInput = document.getElementById("xxTrustedFormCertUrl") as HTMLInputElement | null
-      if (certInput?.value) {
-        console.log("TrustedForm cert:", certInput.value)
-        clearInterval(interval)
+    const checkActiveProspectAvailability = setInterval(() => {
+      if (window.ActiveProspect && typeof window.ActiveProspect.track === "function") {
+        console.log("ActiveProspect.track is now available");
+        clearInterval(checkActiveProspectAvailability); // Stop checking once available
+      } else {
+        console.warn("Waiting for ActiveProspect.track to be available...");
       }
-    }, 500) // Reduced interval for better performance
+    }, 1000); // Check every second for ActiveProspect to be available
 
     return () => {
-      document.getElementById("trustedform-script")?.remove()
-      clearInterval(interval)
-    }
-  }, [])
+      document.getElementById("trustedform-script")?.remove();
+      clearInterval(checkActiveProspectAvailability);
+    };
+  }, []);
   const scrollToForm = () => {
     formRef.current?.scrollIntoView({ behavior: "smooth" })
   }
