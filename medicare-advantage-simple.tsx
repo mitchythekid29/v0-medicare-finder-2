@@ -102,7 +102,9 @@ export default function MedicareAdvantageLanding() {
       clearInterval(interval)
     }
   }, [])
-
+  const scrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
   return (
     <div className="flex flex-col min-h-screen">
      
