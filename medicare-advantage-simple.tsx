@@ -13,7 +13,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Checkbox } from "@/components/ui/checkbox"
 import Image from "next/image"
 import Link from "next/link"
-import Script from "next/script"
 
 export default function MedicareAdvantageLanding() {
   const [step, setStep] = useState(1)
@@ -102,8 +101,6 @@ export default function MedicareAdvantageLanding() {
   }
   return (
     <div className="flex flex-col min-h-screen">
-     
-
       <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex flex-col">
@@ -329,7 +326,7 @@ export default function MedicareAdvantageLanding() {
                   <h3 className="text-xl font-semibold mb-2">Medicare Advantage</h3>
                   <p className="text-gray-600">
                     All-in-one plans that combine hospital, medical, and usually prescription drug coverage. Many plans
-                    include extra benefits like dental, vision, and hearing coverage.
+                    include extra benefits like dental, vision, and or hearing coverage.
                   </p>
                 </CardContent>
               </Card>
