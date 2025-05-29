@@ -407,7 +407,7 @@ export default function MedicareAdvantageLanding() {
                   </div>
                   <div className="flex gap-4">
                     <div className="bg-blue-100 text-blue-600 px-3 py-2 rounded text-sm font-medium w-32 text-center">
-                      3 months before & after 65th birthday
+                      3 months before & after 65th birth month
                     </div>
                     <div>
                       <p className="font-medium">Initial Enrollment Period</p>
@@ -443,9 +443,9 @@ export default function MedicareAdvantageLanding() {
                   <AccordionTrigger>What is Medicare Advantage?</AccordionTrigger>
                   <AccordionContent>
                     Medicare Advantage (Medicare Part C) is an alternative to Original Medicare offered by private
-                    insurance companies approved by Medicare. These plans combine Part A (hospital) and Part B (medical)
-                    coverage, and usually include Part D (prescription drug) coverage and additional benefits not
-                    covered by Original Medicare.
+                    insurance companies and approved by Medicare. These plans combine Part A (hospital) and Part B
+                    (medical) coverage, and usually include Part D (prescription drug) coverage and additional benefits
+                    not covered by Original Medicare.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-3">
@@ -529,6 +529,9 @@ export default function MedicareAdvantageLanding() {
                 Medicare Finder is not affiliated with the government or the federal Medicare program. We do not offer
                 every plan available in your area. Any information we provide is limited to the plans we do offer in
                 your area. Please contact Medicare.gov or 1-800-MEDICARE to get information on all of your options.
+                Plans are insured or covered by a Medicare Advantage (HMO, PPO and PFFS) organization with a Medicare
+                contract and/or a Medicare-approved Part D sponsor. Enrollment in the plan depends on the plan's
+                contract renewal with Medicare.
               </p>
               <p className="text-xs mb-2">
                 This is not a complete description of benefits. Contact the plan for more information. Limitations,
