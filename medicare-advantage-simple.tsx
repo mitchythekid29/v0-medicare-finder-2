@@ -527,11 +527,11 @@ export default function MedicareAdvantageLanding() {
             <div className="mt-2 text-left">
               <p className="text-xs mb-2">
                 Medicare Finder is not affiliated with the government or the federal Medicare program. We do not offer
-                every plan available in your area. Any information we provide is limited to the plans we do offer in
-                your area. Please contact Medicare.gov or 1-800-MEDICARE to get information on all of your options.
-                Plans are insured or covered by a Medicare Advantage (HMO, PPO and PFFS) organization with a Medicare
-                contract and/or a Medicare-approved Part D sponsor. Enrollment in the plan depends on the plan's
-                contract renewal with Medicare.
+                every plan available in your area. Currently we represent 9 organizations which offer 100 products in
+                your area. Please contact Medicare.gov, 1-800-MEDICARE, or your local State Health Insurance Program
+                (SHIP) to get information on all of your options. Plans are insured or covered by a Medicare Advantage
+                (HMO, PPO and PFFS) organization with a Medicare contract and/or a Medicare-approved Part D sponsor.
+                Enrollment in the plan depends on the plan's contract renewal with Medicare.
               </p>
               <p className="text-xs mb-2">
                 This is not a complete description of benefits. Contact the plan for more information. Limitations,
