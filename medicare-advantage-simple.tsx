@@ -265,12 +265,12 @@ export default function MedicareAdvantageLanding() {
 
                         <div className="flex items-top space-x-2 mt-4">
                           <Checkbox id="terms" required className="xxTrustedFormField_8" />
-                          <Label htmlFor="terms" className="text-sm text-gray-500">
-                            By submitting, I agree to the{" "}
+                          <Label htmlFor="terms" className="text-xs text-gray-500 leading-relaxed">
+                            {'By clicking "Submit" below, I provide my express written consent by electronic signature to be contacted by National Senior Benefit Advisors about my request for information including, without limitation, by providing to me information, offers or advertisements, or plan quotes by telephone call or text message to the number(s) I have provided on this form (including any cellular number), even if that number is on any local, state or national "Do Not Call" list, sent using an automatic telephone dialer or an artificial or prerecorded voice, and by email or live agent. This consent is not required as a condition of making a purchase or enrollment. Message and Data rates may apply. Message frequency varies. I agree that any dispute arising out of or relating to this submission, shall be resolved exclusively through binding arbitration under the rules of the American Arbitration Association, and not in court. I understand that I am waiving any right to a jury trial. I also hereby agree to '}
                             <Link href="/terms-of-service" className="underline">
                               Terms of Service
                             </Link>{" "}
-                            and{" "}
+                            {"and "}
                             <Link href="/privacy-policy" className="underline">
                               Privacy Policy
                             </Link>
