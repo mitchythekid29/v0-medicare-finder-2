@@ -1,29 +1,30 @@
 // app/api/submit-lead/route.js
-// Replace this with the contents of your submit-lead.js file
+// This is a placeholder - replace with your actual submit-lead.js content
+
+import { NextResponse } from 'next/server'
 
 export async function POST(request) {
   try {
-    const data = await request.json();
+    const body = await request.json()
     
     // Log the incoming data for debugging
-    console.log('Received lead submission:', data);
+    console.log('Lead submission received:', body)
     
     // TODO: Add your lead submission logic here
-    // This could include:
-    // - Sending to a CRM
-    // - Storing in a database
-    // - Sending to an email service
-    // - Forwarding to a third-party API
+    // - Send to CRM
+    // - Send to email service
+    // - Store in database
+    // - Validate TrustedForm certificate
     
-    return Response.json({ 
+    return NextResponse.json({ 
       success: true, 
       message: 'Lead submitted successfully' 
-    });
+    })
   } catch (error) {
-    console.error('Error processing lead submission:', error);
-    return Response.json(
+    console.error('Error processing lead submission:', error)
+    return NextResponse.json(
       { success: false, message: 'Error processing submission' },
       { status: 500 }
-    );
+    )
   }
 }
