@@ -68,7 +68,7 @@ export default function MedicareAdvantageLanding() {
     setFormData((prev) => ({ ...prev, hasMedicare: value }))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
     if (apReady) {
@@ -87,39 +87,13 @@ export default function MedicareAdvantageLanding() {
         })
       }
 
-      // Get TrustedForm certificate URL
+      console.log("✅ Final submission data:", formData)
       const certInput = document.getElementById("xxTrustedFormCertUrl") as HTMLInputElement
-      const trustedFormCertUrl = certInput?.value || ""
-
-      // Prepare submission data
-      const submissionData = {
-        ...formData,
-        xxTrustedFormCertUrl: trustedFormCertUrl,
+      if (certInput?.value) {
+        console.log("TrustedForm cert:", certInput.value)
       }
 
-      try {
-        const response = await fetch("/api/submit-lead", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(submissionData),
-        })
-
-        if (response.ok) {
-          console.log("✅ Lead submitted successfully")
-          setSubmitted(true)
-        } else {
-          const errorData = await response.json()
-          console.error("❌ Lead submission failed:", errorData)
-          // Still show success to user but log the error
-          setSubmitted(true)
-        }
-      } catch (error) {
-        console.error("❌ Network error submitting lead:", error)
-        // Still show success to user but log the error
-        setSubmitted(true)
-      }
+      setSubmitted(true)
     }
   }
   const scrollToForm = () => {
