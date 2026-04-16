@@ -1,0 +1,98 @@
+MEDICARE FINDER - FORM COMPONENT CODE
+======================================
+
+TRUSTEDFORM SCRIPT (Add to head or component):
+----------------------------------------------
+<Script id="trustedform" strategy="afterInteractive">
+  {`
+    (function() {
+      var tf = document.createElement('script');
+      tf.type = 'text/javascript';
+      tf.async = true;
+      tf.src = ("https:" == document.location.protocol ? 'https' : 'http') +
+        '://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&l=' +
+        new Date().getTime() + Math.random();
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(tf, s);
+    })();
+  `}
+</Script>
+<noscript>
+  <img src="https://api.trustedform.com/ns.gif" />
+</noscript>
+
+
+FORM COMPONENT:
+---------------
+<form onSubmit={handleSubmit} className="space-y-4" id="lead-form">
+  
+  <!-- Hidden TrustedForm fields -->
+  <input type="hidden" name="xxTrustedFormCertUrl" id="xxTrustedFormCertUrl" />
+  <input type="hidden" name="xxTrustedFormToken" id="xxTrustedFormToken" />
+
+  <!-- STEP 1: Name, ZIP, Medicare Status -->
+  <div className="grid grid-cols-2 gap-4">
+    <div>
+      <Label htmlFor="firstName">First Name</Label>
+      <Input id="firstName" placeholder="First Name" required />
+    </div>
+    <div>
+      <Label htmlFor="lastName">Last Name</Label>
+      <Input id="lastName" placeholder="Last Name" required />
+    </div>
+  </div>
+  
+  <div>
+    <Label htmlFor="zipCode">ZIP Code</Label>
+    <Input id="zipCode" placeholder="ZIP Code" required pattern="[0-9]{5}" />
+  </div>
+  
+  <div>
+    <Label>Do you currently have Medicare?</Label>
+    <RadioGroup defaultValue="yes" className="flex gap-4 mt-2">
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="yes" id="medicare-yes" />
+        <Label htmlFor="medicare-yes">Yes</Label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="no" id="medicare-no" />
+        <Label htmlFor="medicare-no">No</Label>
+      </div>
+    </RadioGroup>
+  </div>
+  
+  <Button type="submit">Continue</Button>
+
+  <!-- STEP 2: Phone and Consent -->
+  <div>
+    <Label htmlFor="phone">Phone Number</Label>
+    <Input id="phone" placeholder="(123) 456-7890" required />
+  </div>
+  
+  <div className="flex items-top space-x-2 mt-4">
+    <Checkbox id="terms" required />
+    <Label htmlFor="terms">
+      [CONSENT TEXT - SEE BELOW]
+    </Label>
+  </div>
+  
+  <Button type="submit">Submit</Button>
+</form>
+
+
+FORM FIELDS COLLECTED:
+----------------------
+- firstName
+- lastName  
+- zipCode
+- hasMedicare (yes/no)
+- phone
+- xxTrustedFormCertUrl (hidden, auto-populated by TrustedForm)
+- xxTrustedFormToken (hidden, auto-populated by TrustedForm)
+
+
+CONSENT TEXT:
+-------------
+By clicking "Submit" below, I provide my express written consent by electronic signature to be contacted by National Senior Benefit Advisors about my request for information including, without limitation, by a licensed insurance agent regarding Medicare Advantage or Part D plans, or by providing to me information, offers or advertisements, or plan quotes by telephone call or text message to the number(s) I have provided on this form (including any cellular number), even if that number is on any local, state or national "Do Not Call" list, sent using an automatic telephone dialer or an artificial or prerecorded voice, and by email or live agent. This consent is not required as a condition of making a purchase or enrollment. Message and Data rates may apply. Message frequency varies. I agree that any dispute arising out of or relating to this submission, shall be resolved exclusively through binding arbitration under the rules of the American Arbitration Association, and not in court. I understand that I am waiving any right to a jury trial. I also hereby agree to Terms of Service and Privacy Policy.
+
+(Terms of Service link: /terms-of-service)
+(Privacy Policy link: /privacy-policy)
