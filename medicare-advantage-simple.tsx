@@ -87,11 +87,21 @@ export default function MedicareAdvantageLanding() {
         })
       }
 
-      console.log("✅ Final submission data:", formData)
+      // Send lead + TrustedForm cert URL to Google Sheet
       const certInput = document.getElementById("xxTrustedFormCertUrl") as HTMLInputElement
-      if (certInput?.value) {
-        console.log("TrustedForm cert:", certInput.value)
-      }
+      const certUrl = certInput?.value ?? ""
+
+      fetch("/api/submit-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          phone: formData.phone,
+          cert_url: certUrl,
+          timestamp: new Date().toISOString(),
+        }),
+      }).catch((err) => console.error("Lead logging error:", err))
 
       setSubmitted(true)
     }
