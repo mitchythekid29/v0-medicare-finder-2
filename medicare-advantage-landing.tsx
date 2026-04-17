@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Check, Calendar, Phone, Shield, ArrowRight, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -15,10 +15,54 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 export default function MedicareAdvantageLanding() {
   const [step, setStep] = useState(1)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Store step 1 values so we can send them with step 2
+  const firstNameRef = useRef<HTMLInputElement>(null)
+  const lastNameRef = useRef<HTMLInputElement>(null)
+  const phoneRef = useRef<HTMLInputElement>(null)
+
+  // Saved from step 1
+  const [savedFirstName, setSavedFirstName] = useState("")
+  const [savedLastName, setSavedLastName] = useState("")
+
+  const handleStep1Submit = (e: React.FormEvent) => {
     e.preventDefault()
-    setStep(step + 1)
+    // Save name values before moving to step 2
+    setSavedFirstName(firstNameRef.current?.value ?? "")
+    setSavedLastName(lastNameRef.current?.value ?? "")
+    setStep(2)
+  }
+
+  const handleFinalSubmit = async () => {
+    setSubmitStatus("loading")
+
+    // TrustedForm auto-injects this hidden field into the page's form
+    const certUrl =
+      (document.querySelector('input[name="xxTrustedFormCertUrl"]') as HTMLInputElement)?.value ?? ""
+
+    const phone = phoneRef.current?.value ?? ""
+
+    try {
+      const res = await fetch("/api/submit-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name: savedFirstName,
+          last_name: savedLastName,
+          phone,
+          cert_url: certUrl,
+          timestamp: new Date().toISOString(),
+        }),
+      })
+
+      if (!res.ok) throw new Error("Submission failed")
+
+      setSubmitStatus("success")
+      setStep(3)
+    } catch {
+      setSubmitStatus("error")
+    }
   }
 
   return (
@@ -102,15 +146,18 @@ export default function MedicareAdvantageLanding() {
                 <h2 className="text-xl font-semibold mb-4 text-center">Find Your Perfect Medicare Plan</h2>
 
                 {step === 1 && (
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form onSubmit={handleStep1Submit} className="space-y-4">
+                    {/* TrustedForm hidden field — auto-populated by their JS snippet */}
+                    <input type="hidden" name="xxTrustedFormCertUrl" />
+
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="firstName">First Name</Label>
-                        <Input id="firstName" placeholder="First Name" required />
+                        <Input ref={firstNameRef} id="firstName" placeholder="First Name" required />
                       </div>
                       <div>
                         <Label htmlFor="lastName">Last Name</Label>
-                        <Input id="lastName" placeholder="Last Name" required />
+                        <Input ref={lastNameRef} id="lastName" placeholder="Last Name" required />
                       </div>
                     </div>
 
@@ -155,7 +202,7 @@ export default function MedicareAdvantageLanding() {
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="phone">Phone Number</Label>
-                      <Input id="phone" placeholder="(123) 456-7890" required />
+                      <Input ref={phoneRef} id="phone" placeholder="(123) 456-7890" required />
                     </div>
 
                     <div>
@@ -178,12 +225,36 @@ export default function MedicareAdvantageLanding() {
                       </Select>
                     </div>
 
-                    <Button className="w-full bg-red-600 hover:bg-red-700">See My Plan Options</Button>
+                    <Button
+                      className="w-full bg-red-600 hover:bg-red-700"
+                      onClick={handleFinalSubmit}
+                      disabled={submitStatus === "loading"}
+                    >
+                      {submitStatus === "loading" ? "Submitting..." : "See My Plan Options"}
+                    </Button>
+
+                    {submitStatus === "error" && (
+                      <p className="text-sm text-red-500 text-center">
+                        Something went wrong. Please try again.
+                      </p>
+                    )}
 
                     <div className="flex items-center justify-center gap-2 text-sm text-gray-500 mt-4">
                       <Shield className="h-4 w-4" />
                       Your information is secure and will never be sold
                     </div>
+                  </div>
+                )}
+
+                {step === 3 && (
+                  <div className="text-center space-y-4 py-6">
+                    <div className="rounded-full bg-green-100 p-4 w-16 h-16 flex items-center justify-center mx-auto">
+                      <Check className="h-8 w-8 text-green-600" />
+                    </div>
+                    <h3 className="text-xl font-semibold">Thank You, {savedFirstName}!</h3>
+                    <p className="text-gray-600">
+                      A licensed agent will be in touch shortly to help you find the right plan.
+                    </p>
                   </div>
                 )}
               </div>
