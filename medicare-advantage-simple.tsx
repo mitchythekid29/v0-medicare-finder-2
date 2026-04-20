@@ -116,9 +116,9 @@ export default function MedicareAdvantageLanding() {
             </span>
           </div>
           <div className="flex flex-col items-end">
-            <a href="tel:8773530244" className="flex items-center text-[#4BB6E8] font-bold text-xs md:text-xl">
+            <a href="tel:8668771049" className="flex items-center text-[#4BB6E8] font-bold text-xs md:text-xl">
               <Phone className="h-3 w-3 md:h-5 md:w-5 mr-0.5 md:mr-2" />
-              (877) 353-0244
+              (866) 877-1049
             </a>
             <span className="text-xs text-gray-600 hidden md:inline">For Fastest Service Call Now!</span>
           </div>
@@ -300,8 +300,8 @@ export default function MedicareAdvantageLanding() {
                     </p>
                     <p className="text-gray-700 font-medium">
                       Don't want to wait?{" "}
-                      <a href="tel:8773530244" className="text-blue-600 hover:underline">
-                        Call us now at (877) 353-0244
+                      <a href="tel:8668771049" className="text-blue-600 hover:underline">
+                        Call us now at (866) 877-1049
                       </a>
                     </p>
                   </div>
